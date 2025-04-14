@@ -27,8 +27,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build image
         run: docker build .\Mongo\ --tag ${{ secrets.DOCKER_USERNAME }}/mongo_mse --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Tag docker image {{ secrets.DOCKER_USERNAME }}/mongo_mse {{ secrets.DOCKER_USERNAME }}/mongo_mse:1.0
-        run: docker tag 
+      - name: Tag docker image 
+        run: docker tag {{ secrets.DOCKER_USERNAME }}/mongo_mse {{ secrets.DOCKER_USERNAME }}/mongo_mse:1.0
       - name: Push image to docker hub
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
