@@ -55,54 +55,19 @@ jobs:
         shell: bash
         run: sudo nslookup mongo 
      
-      - name: Create Replica Set Step 1
+      - name: initialize replica set (from second container)
         shell: bash
         run: |
            sleep 5 # Give mongo a chance to start up
            docker run --rm --network mongo-network  mongo:8.0 mongosh -u admin -p basic --host mongo   --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "mongo:27017"}]})'
 
-      - name: Create Replica Set Step 2
-        shell: bash
-        run: docker exec -d mongo bash -c "mongosh -u admin -p basic --verbose  --eval  'rs.initiate({})' >> /var/log/mongoshell 2>&1"
-
-      - name: Create Replica Set Step 3
-        shell: bash
-        run:   docker exec mongo pwd
-
-      - name: check mongo container status
-        shell: bash
-        run: |
-          sleep 2
-          docker logs mongo
+ #     - name: check mongo container status
+ #       shell: bash
+ #       run: |
+ #         sleep 2
+ #         docker logs mongo
       - name: Build test application
         run: dotnet build  "${{ github.workspace }}/ConsoleApp3.sln" 
       - name: Run test application
         shell: bash 
         run: cd ${{ github.workspace }}/ConsoleApp3/bin/Debug/net8.0 && dotnet ./ConsoleApp3.dll
-       #- name: Find solution
-       #  shell: pwsh
-       #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
-      
-
-   
-   #    - name: check mongo status
-   #      id: check_mongo_status
-   #      shell: pwsh
-   #      run: |
-   #        do
-   #        {
-   #           Start-Sleep -Seconds 2
-   #           docker inspect mongo -f '{{.State.Running}}'
-   #           $count++
-   #        } while ($count -lt 10)
-   #    - name: Install Mongo Shell into Docker container 
-   #      shell: pwsh
-   #      run: docker exec -d mongo powershell -c Invoke-WebRequest -Uri https://downloads.mongodb.com/compass/mongosh-2.5.0-win32-x64.zip -OutFile C:\mongo\bin
-       #- name: Initialize MongoDB Replica Set
-       #  run: |
-       #    sleep 5 # Give mongo a chance to start up
-       #    docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
-  #     - name: Stop MongoDB
-  #       run: |
-  #         docker rm -f mongo
-    
