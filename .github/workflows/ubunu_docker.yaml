@@ -44,7 +44,7 @@ jobs:
         id: start-mongo
         shell: bash
         run: |
-          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all" "--replSet" "Workflow"
+          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic --entrypoint "bash -c openssl rand -base64 756 > /data/keyfile && chmod 400 /data/keyfile && chown 999:999 /data/keyfile && exec docker-entrypoint.sh $$@" mongo:8 "mongod" "--bind_ip_all" "--replSet" "Workflow"
       - name: Create Replica Set
         shell: bash
         run: docker exec -d mongo bash -c "mongosh -u admin -p basic --quiet --eval 'rs.initiate({})' > mongo.out"
