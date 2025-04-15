@@ -21,14 +21,22 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Start mongo
-        id: start-mongo
-        run: docker run --rm -d -p 27017:27017 --name mongo  mongo:6.0 --replSet test --bind_ip_all
-      - name: Initialize MongoDB Replica Set
-        run: |
-          sleep 5 # Give mongo a chance to start up
-          docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
-      - name: Stop MongoDB
-        run: |
-          docker rm -f mongo
+       - name: Get IP Addresses
+         id: ip
+         uses: candidob/get-runner-ip@v1.0.0
+
+       - name: See IP Addresses
+         run: |
+           echo ${{ steps.ip.outputs.ipv4 }}
+           echo ${{ steps.ip.outputs.ipv6 }}
+      #- name: Start mongo
+      #  id: start-mongo
+      #  run: docker run --rm -d -p 27017:27017 --name mongo  mongo:6.0 --replSet test --bind_ip_all
+      #- name: Initialize MongoDB Replica Set
+      #  run: |
+      #    sleep 5 # Give mongo a chance to start up
+      #    docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
+      #- name: Stop MongoDB
+      #  run: |
+      #    docker rm -f mongo
     
