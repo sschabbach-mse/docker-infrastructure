@@ -48,6 +48,9 @@ jobs:
       - name: Create Replica Set
         shell: bash
         run: docker exec -d mongo bash -c mongosh -u admin -p basic --eval "rs.initiate({})"
+      - name: test lookup 
+        shell: bash
+        run: sudo nslookup mongo 
       - name: Build test application
         run: dotnet build  "${{ github.workspace }}/ConsoleApp3.sln" 
       - name: Run test application
