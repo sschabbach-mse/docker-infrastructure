@@ -52,7 +52,7 @@ jobs:
         run: dotnet build  "${{ github.workspace }}/ConsoleApp3.sln" 
       - name: Run test application
         shell: bash 
-        run: cd ${{ github.workspace }}/ConsoleApp3/bin/Debug/net8.0 && dotnet run ./ConsoleApp3.dll
+        run: cd ${{ github.workspace }}/ConsoleApp3/bin/Debug/net8.0 && dotnet ./ConsoleApp3.dll
        #- name: Find solution
        #  shell: pwsh
        #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
