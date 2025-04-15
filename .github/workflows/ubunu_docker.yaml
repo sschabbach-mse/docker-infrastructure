@@ -49,12 +49,16 @@ jobs:
           docker build ./Mongo -t mse_mongo
           docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo --hostname mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
           docker inspect mongo
+        
+      - name: test lookup 
+        shell: bash
+        run: sudo nslookup mongo 
      
       - name: Create Replica Set Step 1
         shell: bash
         run: |
            sleep 5 # Give mongo a chance to start up
-           docker run --rm mongo:8.0 mongosh -u admin -p basic --host mongo --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "mongo:27017"}]})'
+           docker run --rm mongo:8.0 mongosh -u admin -p basic --host mongo --link mongo --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "mongo:27017"}]})'
 
       - name: Create Replica Set Step 2
         shell: bash
@@ -69,9 +73,6 @@ jobs:
         run: |
           sleep 2
           docker logs mongo
-      - name: test lookup 
-        shell: bash
-        run: sudo nslookup mongo 
       - name: Build test application
         run: dotnet build  "${{ github.workspace }}/ConsoleApp3.sln" 
       - name: Run test application
