@@ -40,17 +40,6 @@ jobs:
         run: |
           echo "hello"
           echo ${{ github.workspace }}
-      - name: Build test application
-        run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
-       #- name: Find solution
-       #  shell: pwsh
-       #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
-       #- name: Run test application
-       #  run: |
-       #    cd ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0
-       #    $command = “.\ConsoleApp3.exe”
-       #    Invoke-Expression $command
-       #  
       - name: Start mongo
         id: start-mongo
         shell: bash
@@ -59,6 +48,17 @@ jobs:
       - name: Create Replica Set
         shell: bash
         run: docker exec -d mongo bash -c mongosh -u admin -p basic --eval "rs.initiate({})"
+      - name: Build test application
+        run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
+      - name: Run test application
+        shell: bash 
+        run: cd ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 && dotnet run .\ConsoleApp3.dll
+       #- name: Find solution
+       #  shell: pwsh
+       #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
+      
+
+   
    #    - name: check mongo status
    #      id: check_mongo_status
    #      shell: pwsh
