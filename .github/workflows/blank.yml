@@ -47,36 +47,38 @@ jobs:
          run: |
            Write-Host "hello"
            Write-Host ${{ github.workspace }}
-       - name: Find solution
-         shell: pwsh
-         run: Get-ChildItem -Path ${{ github.workspace }}
+       #- name: Find solution
+       #  shell: pwsh
+       #  run: Get-ChildItem -Path ${{ github.workspace }}
        - name: Build test application
          run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
-       - name: Find solution
-         shell: pwsh
-         run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
+       #- name: Find solution
+       #  shell: pwsh
+       #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
        - name: Run test application
          run: |
            cd ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0
            $command = “.\ConsoleApp3.exe”
            Invoke-Expression $command
          
-       #- name: Start mongo
-       #  id: start-mongo
-       #  shell: pwsh
-       #  run: |
-       #    docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all"
-       #- name: check mongo status
-       #  id: check_mongo_status
-       #  shell: pwsh
-       #  run: |
-       #    do
-       #    {
-       #       Start-Sleep -Seconds 2
-       #       docker inspect mongo -f '{{.State.Running}}'
-       #       $count++
-       #    } while ($count -lt 10)
-
+       - name: Start mongo
+         id: start-mongo
+         shell: pwsh
+         run: |
+           docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all"
+       - name: check mongo status
+         id: check_mongo_status
+         shell: pwsh
+         run: |
+           do
+           {
+              Start-Sleep -Seconds 2
+              docker inspect mongo -f '{{.State.Running}}'
+              $count++
+           } while ($count -lt 10)
+       - name: Install Mongo Shell into Docker container 
+         shell: pwsh
+         run: docker exec -d mongo powershell -c Invoke-WebRequest -Uri https://downloads.mongodb.com/compass/mongosh-2.5.0-win32-x64.zip -OutFile C:\mongo\bin
        #- name: Initialize MongoDB Replica Set
        #  run: |
        #    sleep 5 # Give mongo a chance to start up
