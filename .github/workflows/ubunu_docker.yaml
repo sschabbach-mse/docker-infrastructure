@@ -50,8 +50,9 @@ jobs:
         shell: bash
         run: |
           sleep 5
-          docker container ls
           docker logs mongo
+          docker container ls
+          
           
       #- name: Create Replica Set
       #  shell: bash
