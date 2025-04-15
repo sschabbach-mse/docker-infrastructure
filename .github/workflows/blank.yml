@@ -33,6 +33,9 @@ jobs:
          run: |
            Write-Host ${{ steps.ip.outputs.ipv4 }}
            Write-Host ${{ steps.ip.outputs.ipv6 }}
+       - name: create dns mapping
+         shell: pwsh
+         run: Add-Content -Path "C:\Windows\System32\drivers\etc/hosts" -Value "127.0.0.1 mongo"
        - name: Start mongo
          id: start-mongo
          shell: pwsh
