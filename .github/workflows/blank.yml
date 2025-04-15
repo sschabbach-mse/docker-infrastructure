@@ -20,6 +20,9 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write
+      packages: write
     steps:
        - name: Get IP Addresses
          id: ip
@@ -29,9 +32,11 @@ jobs:
          run: |
            echo ${{ steps.ip.outputs.ipv4 }}
            echo ${{ steps.ip.outputs.ipv6 }}
-      #- name: Start mongo
-      #  id: start-mongo
-      #  run: docker run --rm -d -p 27017:27017 --name mongo  mongo:6.0 --replSet test --bind_ip_all
+       - name: Start mongo
+         id: start-mongo
+         shell: pwsh
+         run: |
+           docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic  mongo:8.0 --replSet Workflow --bind_ip_all 
       #- name: Initialize MongoDB Replica Set
       #  run: |
       #    sleep 5 # Give mongo a chance to start up
