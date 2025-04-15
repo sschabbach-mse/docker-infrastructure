@@ -60,7 +60,7 @@ jobs:
 
       - name: Create Replica Set Step 3
         shell: bash
-        run:  docker exec -d mongo bash -c "cat /var/log/mongoshell"
+        run:   docker exec -it mongo pwd
 
       - name: check mongo container status
         shell: bash
