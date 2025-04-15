@@ -18,20 +18,17 @@ env:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  push:
+  build:
     runs-on: windows-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - name: Build image
-        run: docker build .\Mongo\ --tag ${{ secrets.DOCKER_USERNAME }}/mongo_mse --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Tag docker image 
-        run: docker tag {{ secrets.DOCKER_USERNAME }}/mongo_mse {{ secrets.DOCKER_USERNAME }}/mongo_mse:1.0
-      - name: Push image to docker hub
+      - name: Start mongo
+        id: start-mongo
+        run: docker run --rm -d -p 27017:27017 --name mongo  mongo:6.0 --replSet test --bind_ip_all
+      - name: Initialize MongoDB Replica Set
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push  {{ secrets.DOCKER_USERNAME }}/mongo_mse:1.0
-      - name: Run mongo
-        run: docker run -d --name mongo p 27017:27017  {{ secrets.DOCKER_USERNAME }}mongo_mse:1.0 
+          sleep 5 # Give mongo a chance to start up
+          docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
+      - name: Stop MongoDB
+        run: |
+          docker rm -f mongo
+    
