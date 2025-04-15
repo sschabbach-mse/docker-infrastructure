@@ -47,7 +47,7 @@ jobs:
           pwd
           ls -al
           docker build ./Mongo -t mse_mongo
-          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip_all" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
+          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
 
      
       - name: Create Replica Set
