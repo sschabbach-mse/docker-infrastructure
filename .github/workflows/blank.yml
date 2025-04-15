@@ -52,6 +52,8 @@ jobs:
          run: Get-ChildItem -Path ${{ github.workspace }}
        - name: Build test application
          run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
+       - name: Run test application
+         run: dotnet run C:\Users\S.Schabbach\source\repos\ConsoleApp3\ConsoleApp3\bin\Debug\net8.0\ConsoleApp3.exe
        #- name: Start mongo
        #  id: start-mongo
        #  shell: pwsh
