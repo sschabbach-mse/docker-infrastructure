@@ -52,6 +52,7 @@ jobs:
       - name: check mongo container status
         shell: bash
         run: |
+          sleep 5
           docker logs mongo
           
           
