@@ -49,16 +49,17 @@ jobs:
           docker build ./Mongo -t mse_mongo
           docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip_all" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
 
+     
+      - name: Create Replica Set
+        shell: bash
+        run: |
+          sleep 2
+          docker exec -d mongo bash -c "mongosh -u admin -p basic --quiet --eval 'rs.initiate({})' > mongo.out"
       - name: check mongo container status
         shell: bash
         run: |
-          sleep 5
+          sleep 2
           docker logs mongo
-          
-          
-      - name: Create Replica Set
-        shell: bash
-        run: docker exec -d mongo bash -c "mongosh -u admin -p basic --quiet --eval 'rs.initiate({})' > mongo.out"
       - name: test lookup 
         shell: bash
         run: sudo nslookup mongo 
