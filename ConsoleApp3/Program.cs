@@ -36,9 +36,8 @@ try
 
     await collection.InsertOneAsync(document);
 
-    Console.WriteLine("Databases found: " + String.Join(",", await client.ListDatabaseNamesAsync()));
-    Console.WriteLine("Collections found: " + String.Join(",", await mongoDatabase.ListCollectionsAsync()));
-
+      Console.WriteLine("Databases found: " + String.Join(",", (await client.ListDatabaseNamesAsync()).ToList()));
+    Console.WriteLine("Collections found: " + String.Join(",", (await mongoDatabase.ListCollectionsAsync()).ToList()));
 }
 catch (Exception e)
 {
