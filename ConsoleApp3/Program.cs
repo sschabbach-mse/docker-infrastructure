@@ -14,8 +14,7 @@ try
             new MongoServerAddress("mongo"),
         },
         DirectConnection = false,
-        Credential = MongoCredential.CreateCredential("admin", "admin", "basic"),
-        ReplicaSetName = "Workflow"
+        Credential = MongoCredential.CreateCredential("admin", "admin", "basic")
     };
 
     var client = new MongoClient(mongoClientSettings);
