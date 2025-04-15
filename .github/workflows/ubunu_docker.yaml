@@ -49,9 +49,7 @@ jobs:
       - name: check mongo container status
         shell: bash
         run: |
-          sleep 5
-          docker logs mongo
-          docker container ls
+          docker inspect mongo
           
           
       #- name: Create Replica Set
