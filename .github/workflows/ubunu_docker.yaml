@@ -1,0 +1,82 @@
+
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: mse-mongo
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+         
+      - name: create dns mapping
+        shell: bash
+        run: |
+          sudo -- sh -c -e "echo '127.10.0.1' >> /etc/hosts";
+  #    - name: view host mappings
+  #      shell: bash
+  #      run: Get-Content -Path "C:\Windows\System32\drivers\etc\hosts"
+  #     - name: Debug
+  #       shell: pwsh
+  #       run: |
+  #         Write-Host "hello"
+  #         Write-Host ${{ github.workspace }}
+       #- name: Find solution
+       #  shell: pwsh
+       #  run: Get-ChildItem -Path ${{ github.workspace }}
+ #      - name: Build test application
+ #        run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
+       #- name: Find solution
+       #  shell: pwsh
+       #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
+       #- name: Run test application
+       #  run: |
+       #    cd ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0
+       #    $command = “.\ConsoleApp3.exe”
+       #    Invoke-Expression $command
+       #  
+   #    - name: Start mongo
+   #      id: start-mongo
+   #      shell: pwsh
+   #      run: |
+   #        docker run --rm -d --network host -p mongo.example.com:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all" "--replSet" "build-tests"
+   #    - name: check mongo status
+   #      id: check_mongo_status
+   #      shell: pwsh
+   #      run: |
+   #        do
+   #        {
+   #           Start-Sleep -Seconds 2
+   #           docker inspect mongo -f '{{.State.Running}}'
+   #           $count++
+   #        } while ($count -lt 10)
+   #    - name: Install Mongo Shell into Docker container 
+   #      shell: pwsh
+   #      run: docker exec -d mongo powershell -c Invoke-WebRequest -Uri https://downloads.mongodb.com/compass/mongosh-2.5.0-win32-x64.zip -OutFile C:\mongo\bin
+       #- name: Initialize MongoDB Replica Set
+       #  run: |
+       #    sleep 5 # Give mongo a chance to start up
+       #    docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
+  #     - name: Stop MongoDB
+  #       run: |
+  #         docker rm -f mongo
+    
