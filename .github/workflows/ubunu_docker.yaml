@@ -40,11 +40,14 @@ jobs:
         run: |
           echo "hello"
           echo ${{ github.workspace }}
-      - name: Start mongo
-        id: start-mongo
+#      - name: Start mongo
+#        id: start-mongo
+#        shell: bash
+#        run: |
+#          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "sudo openssl rand -base64 756 > /data/keyfile && chmod 400 /data/keyfile &&  chown 999:999 /data/keyfile && mongod --bind_ip_all"
+      - name: Startup docker containers
         shell: bash
-        run: |
-          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "sudo openssl rand -base64 756 > /data/keyfile && chmod 400 /data/keyfile &&  chown 999:999 /data/keyfile && mongod --bind_ip_all" 
+        run: docker-compose -f ../../docker-compose.yaml
       - name: check mongo container status
         shell: bash
         run: |
