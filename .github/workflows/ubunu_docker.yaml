@@ -51,15 +51,16 @@ jobs:
         run: |
           sleep 5
           docker container ls
+          docker logs mongo
           
-      - name: Create Replica Set
-        shell: bash
-        run: docker exec -d mongo bash -c "mongosh -u admin -p basic --quiet --eval 'rs.initiate({})' > mongo.out"
-      - name: Check replica created
-        shell: bash
-        run: |
-          docker exec -d mongo "ls -al /data/keyfile"
-          docker exec -d mongo "cat /data/keyfile"
+      #- name: Create Replica Set
+      #  shell: bash
+      #  run: docker exec -d mongo bash -c "mongosh -u admin -p basic --quiet --eval 'rs.initiate({})' > mongo.out"
+      #- name: Check replica created
+      #  shell: bash
+      #  run: |
+      #    docker exec -d mongo "ls -al /data/keyfile"
+      #    docker exec -d mongo "cat /data/keyfile"
       - name: test lookup 
         shell: bash
         run: sudo nslookup mongo 
