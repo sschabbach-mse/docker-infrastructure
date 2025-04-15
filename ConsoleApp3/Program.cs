@@ -15,6 +15,7 @@ try
         },
         DirectConnection = false,
         Credential = MongoCredential.CreateCredential("admin", "admin", "basic"),
+        ReplicaSetName = "Workflow"
     };
 
     var client = new MongoClient(mongoClientSettings);
