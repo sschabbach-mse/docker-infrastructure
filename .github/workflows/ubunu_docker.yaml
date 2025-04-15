@@ -52,7 +52,9 @@ jobs:
      
       - name: Create Replica Set Step 1
         shell: bash
-        run: sleep 2
+        run: |
+           sleep 5 # Give mongo a chance to start up
+           docker run --rm mongo:8.0 mongosh -u admin -p basic --host mongo --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "mongo:27017"}]})'
 
       - name: Create Replica Set Step 2
         shell: bash
