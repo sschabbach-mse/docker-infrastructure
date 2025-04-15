@@ -46,7 +46,7 @@ jobs:
            Write-Host ${{ github.workspace }}
        - name: Find solution
          shell: pwsh
-         run: Get-ChildItem -Path ${{ github.workspace }}\..\..\
+         run: Get-ChildItem -Path ${{ github.workspace }}
        - name: Build test application
          run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
        #- name: Start mongo
