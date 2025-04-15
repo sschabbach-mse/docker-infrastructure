@@ -31,10 +31,10 @@ jobs:
       - name: create dns mapping
         shell: bash
         run: |
-          sudo -- sh -c -e "echo '127.10.0.1' >> /etc/hosts";
-  #    - name: view host mappings
-  #      shell: bash
-  #      run: Get-Content -Path "C:\Windows\System32\drivers\etc\hosts"
+          sudo -- sh -c -e "echo '127.10.0.1 mongo' >> /etc/hosts";
+      - name: view host mappings
+        shell: bash
+        run: cat /etc/hosts
   #     - name: Debug
   #       shell: pwsh
   #       run: |
