@@ -38,11 +38,11 @@ jobs:
          shell: pwsh
          run: |
            docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8.0.8
-      #- name: Initialize MongoDB Replica Set
-      #  run: |
-      #    sleep 5 # Give mongo a chance to start up
-      #    docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
-      #- name: Stop MongoDB
-      #  run: |
-      #    docker rm -f mongo
+       - name: Initialize MongoDB Replica Set
+         run: |
+           sleep 5 # Give mongo a chance to start up
+           docker run --rm mongo:6.0 mongosh --host 172.17.0.1 --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "172.17.0.1:27017"}]})'
+       - name: Stop MongoDB
+         run: |
+           docker rm -f mongo
     
