@@ -35,25 +35,25 @@ jobs:
            Write-Host ${{ steps.ip.outputs.ipv6 }}
        - name: create dns mapping
          shell: pwsh
-         run: Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 mongo"
+         run: Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.10.0.1 mongo"
        - name: view host mappings
          shell: pwsh
          run: Get-Content -Path "C:\Windows\System32\drivers\etc\hosts"
-       #- name: Start mongo
-       #  id: start-mongo
-       #  shell: pwsh
-       #  run: |
-       #    docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all"
-       #- name: check mongo status
-       #  id: check_mongo_status
-       #  shell: pwsh
-       #  run: |
-       #    do
-       #    {
-       #       Start-Sleep -Seconds 2
-       #       docker inspect mongo -f '{{.State.Running}}'
-       #       $count++
-       #    } while ($count -lt 10)
+       - name: Start mongo
+         id: start-mongo
+         shell: pwsh
+         run: |
+           docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all"
+       - name: check mongo status
+         id: check_mongo_status
+         shell: pwsh
+         run: |
+           do
+           {
+              Start-Sleep -Seconds 2
+              docker inspect mongo -f '{{.State.Running}}'
+              $count++
+           } while ($count -lt 10)
 
        #- name: Initialize MongoDB Replica Set
        #  run: |
