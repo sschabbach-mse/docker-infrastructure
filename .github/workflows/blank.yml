@@ -37,12 +37,12 @@ jobs:
          id: start-mongo
          shell: pwsh
          run: |
-           docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8
-       - name: Start mongo
+           docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all"
+       - name: Test Mongo Connectivity (direct connection)
          id: test-direct-connection 
          shell: pwsh
          run: |
-           docker exec mongo  powershell -c "mongosh -u admin -p basic"
+           docker exec mongo  powershell -c "mongosh -u admin -p basic --host localhost ---quiet"
 
        #- name: Initialize MongoDB Replica Set
        #  run: |
