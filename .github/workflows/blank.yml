@@ -45,7 +45,7 @@ jobs:
            Write-Host "hello"
            Write-Host ${{ github.workspace }}
        - name: Build test application
-         run: dotnet build  "${{ github.workspace }}\${{ inputs.PROJECT_NAME }}" 
+         run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
        #- name: Start mongo
        #  id: start-mongo
        #  shell: pwsh
