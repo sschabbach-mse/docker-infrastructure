@@ -24,6 +24,9 @@ jobs:
       contents: write
       packages: write
     steps:
+       - name: Checkout Repository
+         uses: actions/checkout@v4
+         
        - name: Get IP Addresses
          id: ip
          uses: candidob/get-runner-ip@v1.0.0
