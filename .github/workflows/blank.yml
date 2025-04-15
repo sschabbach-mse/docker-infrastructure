@@ -42,7 +42,7 @@ jobs:
          id: test-direct-connection 
          shell: pwsh
          run: |
-           docker exec mongo mongosh -u admin -p basic "mongodb://localhost:27017"
+           docker exec mongo  powershell -c "mongosh -u admin -p basic"
 
        #- name: Initialize MongoDB Replica Set
        #  run: |
