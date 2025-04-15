@@ -44,7 +44,7 @@ jobs:
         id: start-mongo
         shell: bash
         run: |
-          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all" "--replSet" "Workflow"
+          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
 
       - name: check mongo container status
         shell: bash
