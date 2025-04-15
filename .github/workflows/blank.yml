@@ -58,7 +58,8 @@ jobs:
        - name: Run test application
          run: |
            cd ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0
-           dotnet run .\ConsoleApp3.dll
+           $command = “.\ConsoleApp3.exe”
+           Invoke-Expression $command
          
        #- name: Start mongo
        #  id: start-mongo
