@@ -40,7 +40,7 @@ jobs:
          shell: pwsh
          run: Get-Content -Path "C:\Windows\System32\drivers\etc\hosts"
        - name: Build test application
-         run: dotnet build 
+         run: dotnet build  "${{ github.workspace }}\${{ inputs.PROJECT_NAME }}" 
        #- name: Start mongo
        #  id: start-mongo
        #  shell: pwsh
