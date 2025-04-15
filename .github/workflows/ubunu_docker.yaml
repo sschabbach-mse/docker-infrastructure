@@ -48,6 +48,9 @@ jobs:
       - name: Create Replica Set
         shell: bash
         run: docker exec -d mongo bash -c "mongosh -u admin -p basic --quiet --eval 'rs.initiate({})' > mongo.out"
+      - name: Check replica created
+        shell: bash
+        run: docker logs mongo
       - name: test lookup 
         shell: bash
         run: sudo nslookup mongo 
