@@ -55,8 +55,9 @@ jobs:
        - name: Find solution
          shell: pwsh
          run: Get-ChildItem -Path ${{ github.workspace }} -Recurse 
-       #- name: Run test application
-       #  run: dotnet run ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0\ConsoleApp3.exe
+       - name: Run test application
+         run: dotnet run ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0
+         
        #- name: Start mongo
        #  id: start-mongo
        #  shell: pwsh
