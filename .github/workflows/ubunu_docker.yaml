@@ -35,16 +35,13 @@ jobs:
       - name: view host mappings
         shell: bash
         run: cat /etc/hosts
-  #     - name: Debug
-  #       shell: pwsh
-  #       run: |
-  #         Write-Host "hello"
-  #         Write-Host ${{ github.workspace }}
-       #- name: Find solution
-       #  shell: pwsh
-       #  run: Get-ChildItem -Path ${{ github.workspace }}
- #      - name: Build test application
- #        run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
+      - name: Debug
+        shell: bash
+        run: |
+          echo "hello"
+          echo ${{ github.workspace }}
+      - name: Build test application
+        run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
        #- name: Find solution
        #  shell: pwsh
        #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
