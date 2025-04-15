@@ -49,7 +49,7 @@ jobs:
         shell: bash
         run: |
           sleep 5
-          docker inspect mongo
+          docker inspect mongo -f "status"
           
       - name: Create Replica Set
         shell: bash
