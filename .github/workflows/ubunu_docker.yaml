@@ -49,10 +49,10 @@ jobs:
         shell: bash
         run: docker exec -d mongo bash -c mongosh -u admin -p basic --eval "rs.initiate({})"
       - name: Build test application
-        run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
+        run: dotnet build  "${{ github.workspace }}/ConsoleApp3.sln" 
       - name: Run test application
         shell: bash 
-        run: cd ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 && dotnet run .\ConsoleApp3.dll
+        run: cd ${{ github.workspace }}/ConsoleApp3/bin/Debug/net8.0 && dotnet run ./ConsoleApp3.dll
        #- name: Find solution
        #  shell: pwsh
        #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
