@@ -39,6 +39,11 @@ jobs:
        - name: view host mappings
          shell: pwsh
          run: Get-Content -Path "C:\Windows\System32\drivers\etc\hosts"
+       - name: Debug
+         shell: pwsh
+         run: |
+           Write-Host "hello"
+           Write-Host ${{ github.workspace }}
        - name: Build test application
          run: dotnet build  "${{ github.workspace }}\${{ inputs.PROJECT_NAME }}" 
        #- name: Start mongo
