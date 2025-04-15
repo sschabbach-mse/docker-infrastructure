@@ -37,7 +37,7 @@ jobs:
          id: start-mongo
          shell: pwsh
          run: |
-           docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:5 mongod --replSet Workflow
+           docker run --rm -d -p 27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:5 --entrypoint "powershell -Command $ErrorActionPreference = 'Stop'; #(nop)  CMD [\"mongod\" \"--bind_ip_all\" \"--replicaSet Workflow\"]"
        #- name: Initialize MongoDB Replica Set
        #  run: |
        #    sleep 5 # Give mongo a chance to start up
