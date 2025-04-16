@@ -11,7 +11,7 @@ try
     {
         Servers = new[]
         {
-            new MongoServerAddress("mongo"),
+            new MongoServerAddress("s1.mongo.infrastructure.docker"),
         },
         DirectConnection = false,
         Credential = MongoCredential.CreateCredential("admin", "admin", "basic"),
