@@ -60,7 +60,7 @@ jobs:
         shell: bash
         run: |
            sleep 5 # Give mongo a chance to start up
-           docker run --rm --network mongo-network  mongo:8.0 mongosh -u admin -p basic --host s1.mongo.infrastructure.docker   --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "s1.mongo.infrastructure.docker:27017"}]})'
+           docker run --rm --network mongo-network  mongo:8.0 mongosh -u admin -p basic --host mongo --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "s1.mongo.infrastructure.docker:27017"}]})'
 
  #     - name: check mongo container status
  #       shell: bash
