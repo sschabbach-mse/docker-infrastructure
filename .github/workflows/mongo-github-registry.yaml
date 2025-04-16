@@ -39,8 +39,8 @@ jobs:
       - name: Tag docker image 
         shell: bash
         run: |
-          docker tag mse_mongo sebschmse/mse-mongo/mse_mongo:linux-v1
-          docker tag mse_mongo sebschmse/mse-mongo/mse_mongo:latest
+          docker tag mse_mongo sebschmse/mse_mongo:linux-v1
+          docker tag mse_mongo sebschmse/mse_mongo:latest
       
       - name: Docker login
         shell: bash
@@ -50,5 +50,5 @@ jobs:
       - name: Push docker image 
         shell: bash
         run: |
-          docker push sebschmse/mse-mongo/mse_mongo:linux-v1
-          docker push  sebschmse/mse-mongo/mse_mongo:latest
+          docker push sebschmse/mse_mongo:linux-v1
+          docker push  sebschmse/mse_mongo:latest
