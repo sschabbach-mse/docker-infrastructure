@@ -48,7 +48,7 @@ jobs:
           ls -al
           docker build ./Mongo -t mse_mongo
           docker network create mongo-network
-          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo --hostname mongo --network mongo-network  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
+          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  --network mongo-network  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
           docker inspect mongo
         
       - name: test lookup 
