@@ -32,6 +32,7 @@ jobs:
         shell: bash
         run: |
           sudo -- sh -c -e "echo '127.10.0.1 mongo' >> /etc/hosts";
+          sudo -- sh -c -e "echo '127.0.0.1 s1.mongo.infrastructure.docker' >> /etc/hosts"; 
       - name: view host mappings
         shell: bash
         run: cat /etc/hosts
@@ -48,7 +49,7 @@ jobs:
           ls -al
           docker build ./Mongo -t mse_mongo
           docker network create mongo-network
-          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  --network mongo-network  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
+          docker run --rm -d -p 127.10.0.1:27017:27017 --name mongo  --network mongo-network --add-host s1.mongo.infrastructure.docker:127.0.0.1  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo,s1.mongo.infrastructure.docker" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
           docker inspect mongo
         
       - name: test lookup 
@@ -59,7 +60,7 @@ jobs:
         shell: bash
         run: |
            sleep 5 # Give mongo a chance to start up
-           docker run --rm --network mongo-network  mongo:8.0 mongosh -u admin -p basic --host mongo   --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "mongo:27017"}]})'
+           docker run --rm --network mongo-network  mongo:8.0 mongosh -u admin -p basic --host s1.mongo.infrastructure.docker   --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "s1.mongo.infrastructure.docker:27017"}]})'
 
  #     - name: check mongo container status
  #       shell: bash
