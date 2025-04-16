@@ -39,8 +39,8 @@ jobs:
        - name: create dns mapping
          shell: pwsh
          run: |
-           Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.10.0.1 mongo"
-           Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 mongo.example.com" 
+           Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 mongo"
+           Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "127.0.0.1 s1.mongo.infrastructure.docker" 
        - name: view host mappings
          shell: pwsh
          run: Get-Content -Path "C:\Windows\System32\drivers\etc\hosts"
@@ -49,11 +49,21 @@ jobs:
          run: |
            Write-Host "hello"
            Write-Host ${{ github.workspace }}
-       #- name: Find solution
-       #  shell: pwsh
-       #  run: Get-ChildItem -Path ${{ github.workspace }}
        - name: Build test application
          run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
+       - name: Start mongo docker container 
+         id: start-mongo
+         shell: pwsh
+         run: |
+           docker build ./Mongo -t mse_mongo
+           docker network create mongo-network
+           docker run --rm -d -p 27017:27017 --name mongo  --network mongo-network --add-host s1.mongo.infrastructure.docker:127.0.0.1  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo,s1.mongo.infrastructure.docker" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
+           docker inspect mongo
+       - name: initialize replica set (from second container)
+         shell: pwsh
+         run: |
+           Start-Sleep -Seconds 5
+           docker run --rm --name mongo-client --network mongo-network  mongo:8.0 mongosh -u admin -p basic --host mongo --eval 'rs.initiate({_id: "Workflow", members: [{_id: 0, host: "s1.mongo.infrastructure.docker:27017"}]})'
        #- name: Find solution
        #  shell: pwsh
        #  run: Get-ChildItem -Path ${{ github.workspace }}\ConsoleApp3\bin\Debug\net8.0 -Recurse 
@@ -63,11 +73,7 @@ jobs:
        #    $command = “.\ConsoleApp3.exe”
        #    Invoke-Expression $command
        #  
-       - name: Start mongo
-         id: start-mongo
-         shell: pwsh
-         run: |
-           docker run --rm -d --network host -p mongo.example.com:27017:27017 --name mongo  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mongo:8 "mongod" "--bind_ip_all" "--replSet" "build-tests"
+       
        - name: check mongo status
          id: check_mongo_status
          shell: pwsh
@@ -78,9 +84,9 @@ jobs:
               docker inspect mongo -f '{{.State.Running}}'
               $count++
            } while ($count -lt 10)
-       - name: Install Mongo Shell into Docker container 
-         shell: pwsh
-         run: docker exec -d mongo powershell -c Invoke-WebRequest -Uri https://downloads.mongodb.com/compass/mongosh-2.5.0-win32-x64.zip -OutFile C:\mongo\bin
+       #- name: Install Mongo Shell into Docker container 
+       #  shell: pwsh
+       #  run: docker exec -d mongo powershell -c Invoke-WebRequest -Uri https://downloads.mongodb.com/compass/mongosh-2.5.0-win32-x64.zip -OutFile C:\mongo\bin
        #- name: Initialize MongoDB Replica Set
        #  run: |
        #    sleep 5 # Give mongo a chance to start up
@@ -88,4 +94,5 @@ jobs:
        - name: Stop MongoDB
          run: |
            docker rm -f mongo
+           docker rm -f mongo-client
     
