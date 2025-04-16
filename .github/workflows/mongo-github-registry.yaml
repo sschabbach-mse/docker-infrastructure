@@ -1,0 +1,46 @@
+
+# This is a basic workflow to help you get started with Actions
+
+name: CI-linux-push
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: mse-mongo
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+         
+      
+  
+   
+      - name: Build docker image
+        id: start-mongo
+        shell: bash
+        run: |
+          docker build ./Mongo -t mse_mongo
+      - name: Tag docker image 
+        shell: bash
+        run: |
+          docker tag mse_mongo mse_mongo:linux-v1#
+      - name: Docker login
+        shell: bash
+        run: | 
+          docker login
