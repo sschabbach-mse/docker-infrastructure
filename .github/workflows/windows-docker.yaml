@@ -27,15 +27,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-         
-      
   
-   
       - name: Build docker image
-        id: start-mongo
         shell: bash
         run: |
-          docker build ./Mongo-Windows -t mse_mongo
+          docker build -f ./Mongo-Windows/Dockerfile -t mse_mongo . 
       - name: Tag docker image 
         shell: bash
         run: |
