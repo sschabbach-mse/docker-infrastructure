@@ -55,18 +55,18 @@ jobs:
          id: start-mongo
          shell: pwsh
          run: |
-           docker build ./Mongo -t mse_mongo
+           #docker build ./Mongo -t mse_mongo
            docker build ./Mongo-Windows -t mse_mongo_windows
         - name: Tag docker images
          shell: pwsh
          run: |
-           docker tag mse_mongo sebschmse/mse_mongo-linux-v2
-           docker tag mse_mongo sebschmse/mse_mongo-linux-latest
+           #docker tag mse_mongo sebschmse/mse_mongo-linux-v2
+           #docker tag mse_mongo sebschmse/mse_mongo-linux-latest
 
            docker tag mse_mongo_windows sebschmse/mse_mongo-windows-v1
            docker tag mse_mongo_windows sebschmse/mse_mongo-windows-latest
 
-       - name: Tag docker images
+       - name: Push docker images
          shell: pwsh
          run: |
            docker push sebschmse/mse_mongo-linux-v2
