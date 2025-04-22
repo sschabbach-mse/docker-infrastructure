@@ -51,11 +51,21 @@ jobs:
            Write-Host ${{ github.workspace }}
        - name: Build test application
          run: dotnet build  "${{ github.workspace }}\ConsoleApp3.sln" 
-       #- name: Build docker images
+       - name: Build docker images
          id: start-mongo
          shell: pwsh
          run: |
            docker build ./Mongo -t mse_mongo
+           docker build ./Mongo-Windows -t mse_mongo_windows
+        - name: Tag docker images
+         shell: pwsh
+         run: |
+           docker tag mse_mongo sebschmse/mse_mongo-linux-v2
+           docker tag mse_mongo sebschmse/mse_mongo-linux-latest
+
+           docker tag mse_mongo_windows sebschmse/mse_mongo-windows-v1
+           docker tag mse_mongo_windows sebschmse/mse_mongo-windows-latest
+           
            docker build ./Mongo-Windows -t mse_mongo_windows
        #    docker network create mongo-network
        #    docker run --rm -d -p 27017:27017 --name mongo  --network mongo-network --add-host s1.mongo.infrastructure.docker:127.0.0.1  -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=basic mse_mongo "mongod" "--bind_ip" "localhost,mongo,s1.mongo.infrastructure.docker" "--replSet" "Workflow" "--keyFile" "/data/keyfile"
