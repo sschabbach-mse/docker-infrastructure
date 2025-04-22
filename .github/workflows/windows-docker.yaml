@@ -1,0 +1,54 @@
+
+# This is a basic workflow to help you get started with Actions
+
+name: CI-windows-push
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: mse-mongo
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: windows:latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+         
+      
+  
+   
+      - name: Build docker image
+        id: start-mongo
+        shell: bash
+        run: |
+          docker build ./Mongo-Windows -t mse_mongo
+      - name: Tag docker image 
+        shell: bash
+        run: |
+          docker tag mse_mongo sebschmse/mse_mongo:windows-v1
+          docker tag mse_mongo sebschmse/mse_mongo:windows-latest
+      
+      - name: Docker login
+        shell: bash
+        run: | 
+          docker login -u sebschmse -p "dckr_pat_2FjyfYUmYpUZAq_2txvxwXUSc6M"
+
+      - name: Push docker image 
+        shell: bash
+        run: |
+          docker push sebschmse/mse_mongo:windows-v1
+          docker push sebschmse/mse_mongo:windows-latest
